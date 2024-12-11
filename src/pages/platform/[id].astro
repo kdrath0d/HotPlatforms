@@ -1,0 +1,89 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CategoryTags from '../../components/CategoryTags.astro';
+import DateBadge from '../../components/DateBadge.astro';
+import BackButton from '../../components/BackButton.astro';
+import { platforms } from '../../data/platforms';
+
+export function getStaticPaths() {
+  return platforms.map(platform => ({
+    params: { id: platform.id }
+  }));
+}
+
+const { id } = Astro.params;
+const platform = platforms.find(p => p.id === id);
+
+if (!platform) {
+  return Astro.redirect('/404');
+}
+---
+
+<Layout title={`${platform.title} - Hot Platforms`}>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="mb-6">
+      <BackButton />
+    </div>
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden fade-in">
+      <div class="aspect-video relative">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10"></div>
+        <img 
+          src={platform.image} 
+          alt={platform.title}
+          class="object-cover w-full h-full"
+        />
+      </div>
+      
+      <div class="p-8">
+        <div class="flex justify-between items-center mb-6">
+          <CategoryTags categories={platform.category} />
+          <DateBadge date={platform.dateAdded} />
+        </div>
+
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">
+          {platform.title}
+        </h1>
+        
+        <p class="text-gray-600 mb-8 leading-relaxed">
+          {platform.longDescription}
+        </p>
+
+        <div class="mb-8 p-6 bg-gray-50 rounded-lg">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4">
+            Pairs Well With
+          </h2>
+          <div class="flex flex-wrap gap-2">
+            {platform.pairsWith.map(tool => (
+              <span class="px-3 py-1 text-sm bg-white text-gray-700 rounded-full shadow-sm">
+                {tool}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div class="p-6 bg-gray-50 rounded-lg">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4">
+            Recommended Tutorials
+          </h2>
+          <ul class="space-y-4">
+            {platform.tutorials.map(tutorial => (
+              <li>
+                <a 
+                  href={tutorial.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="group flex items-center text-gray-700 hover:text-blue-600"
+                >
+                  <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                  <span class="group-hover:underline">{tutorial.title}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

@@ -1,0 +1,40 @@
+---
+import CategoryTags from './CategoryTags.astro';
+import DateBadge from './DateBadge.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  image: string;
+  category: string[];
+  dateAdded: string;
+  slug: string;
+}
+
+const { title, description, image, category, dateAdded, slug } = Astro.props;
+---
+
+<a href={`/platform/${slug}`} class="group block fade-in">
+  <article class="h-full bg-white rounded-xl shadow-sm overflow-hidden transform transition-all duration-500 hover:shadow-lg hover:-translate-y-1">
+    <div class="h-48 relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent z-10"></div>
+      <img 
+        src={image} 
+        alt={title}
+        class="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105"
+      />
+    </div>
+    <div class="p-6 flex flex-col h-[calc(100%-12rem)]">
+      <div class="flex justify-between items-start mb-4">
+        <CategoryTags categories={category} />
+        <DateBadge date={dateAdded} />
+      </div>
+      <h3 class="text-xl font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+        {title}
+      </h3>
+      <p class="text-gray-600 flex-grow line-clamp-3">
+        {description}
+      </p>
+    </div>
+  </article>
+</a>

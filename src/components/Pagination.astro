@@ -1,0 +1,57 @@
+---
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
+const { currentPage, totalPages, hasNextPage, hasPreviousPage } = Astro.props;
+
+const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+---
+
+<nav class="flex items-center justify-center space-x-2 mt-12" aria-label="Pagination">
+  <a
+    href={hasPreviousPage ? `/?page=${currentPage - 1}` : undefined}
+    class:list={[
+      "px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200",
+      hasPreviousPage
+        ? "text-gray-700 bg-white hover:bg-gray-50"
+        : "text-gray-400 bg-gray-100 cursor-not-allowed",
+    ]}
+    aria-disabled={!hasPreviousPage}
+  >
+    Previous
+  </a>
+
+  <div class="hidden sm:flex space-x-2">
+    {pages.map((page) => (
+      <a
+        href={`/?page=${page}`}
+        class:list={[
+          "px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200",
+          page === currentPage
+            ? "bg-blue-600 text-white"
+            : "text-gray-700 bg-white hover:bg-gray-50",
+        ]}
+        aria-current={page === currentPage ? "page" : undefined}
+      >
+        {page}
+      </a>
+    ))}
+  </div>
+
+  <a
+    href={hasNextPage ? `/?page=${currentPage + 1}` : undefined}
+    class:list={[
+      "px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200",
+      hasNextPage
+        ? "text-gray-700 bg-white hover:bg-gray-50"
+        : "text-gray-400 bg-gray-100 cursor-not-allowed",
+    ]}
+    aria-disabled={!hasNextPage}
+  >
+    Next
+  </a>
+</nav>

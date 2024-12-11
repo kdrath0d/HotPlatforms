@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PlatformCard from '../components/PlatformCard.astro';
+import { platforms } from '../data/platforms';
+---
+
+<Layout title="Hot Platforms - Discover the Latest Tools and Platforms">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-bold bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent mb-4">
+        Discover Hot Platforms
+      </h1>
+      <p class="text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
+        Explore the latest tools and platforms that are shaping the future of technology.
+        Stay ahead of the curve with our curated collection.
+      </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {platforms.map((platform, index) => (
+        <div style={`animation-delay: ${index * 100}ms`}>
+          <PlatformCard
+            title={platform.title}
+            description={platform.description}
+            image={platform.image}
+            category={platform.category}
+            dateAdded={platform.dateAdded}
+            slug={platform.id}
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</Layout>
